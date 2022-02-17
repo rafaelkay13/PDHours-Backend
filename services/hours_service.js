@@ -24,6 +24,15 @@ async function getHoursMedia(data) {
   return result
 }
 
+async function getReportsBySquad(data) {
+	console.log(data)
+  const query = 'select r.employee_id, e.name, r.description, r.spent_hours, r.created_at from reports as r join employees as e on r.employee_id = e.id where e.squad_id = $1 and r.created_at >= $2 and r.created_at < $3;';
+  const values = [data.squadId, data.begin, data.end];
+  let res = await pool.query(query, values)
+  console.log(res.rows)
+  return res.rows;
+}
+
 async function getDays(data) {
   let dateArray1 = data.begin.split('T');
   let dateArray2 = data.end.split('T');
@@ -39,4 +48,4 @@ async function getDays(data) {
   return timeDifferenceInDays
 }
 
-module.exports = { getHoursByEmployee, getTotalHours, getHoursMedia }
+module.exports = { getHoursByEmployee, getTotalHours, getHoursMedia, getReportsBySquad }

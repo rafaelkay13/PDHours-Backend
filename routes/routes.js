@@ -4,7 +4,7 @@ const router = express.Router()
 const { createEmployee, getEmployee, getEmployeeList, updateEmployee, deleteEmployee } = require('../services/employee_service')
 const { createSquad, getSquad, getSquadList, updateSquad, deleteSquad } = require('../services/squad_service')
 const { createReport, getReport, getReportList, updateReport, deleteReport } = require('../services/report_service')
-const { getHoursByEmployee, getTotalHours, getHoursMedia } = require('../services/hours_service')
+const { getHoursByEmployee, getTotalHours, getHoursMedia, getReportsBySquad } = require('../services/hours_service')
 
 router.get('/', (req, res) => {
     res.send('Página Principal')
@@ -225,27 +225,18 @@ router.post('/mediaHours', async (req, res) => {
     }
 })
 
+router.post('/reportsBySquad', async (req, res) => {
+	console.log(req.body)
+    let data = req.body;
+    try {
+        let result = await getReportsBySquad(data);
+        res.send(result)
+    } catch (err) {
+        res.send(err)
+    }
+})
+
 //---------------END-------------------
 
-router.get('/testando', (req, res) => {
-
-    let body = {
-        squadId: 6,
-        begin: '2022-02-13 15:56:00.698',
-        end: '2023-02-13 15:56:12.698'
-    }
-
-
-    res.send(ok)
-})
-
-router.get('/pool', (req, res) => {
-    let test = {
-        value1: pool.totalCount,
-        value2: pool.waitingCount
-    }
-
-    res.send(test)
-})
 
 module.exports = router;
